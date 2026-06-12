@@ -1,1 +1,90 @@
+:root{
+--main:#61E0BC;
+--bg:#FAFAF7;
+--text:#333;
+}
+
+body{
+margin:0;
+font-family:"Microsoft JhengHei",sans-serif;
+background:var(--bg);
+color:var(--text);
+}
+
+.hero{
+text-align:center;
+padding:40px 20px;
+}
+
+.logo-area img{
+width:120px;
+}
+
+h1{
+margin-top:20px;
+}
+
+.btn{
+display:inline-block;
+margin-top:20px;
+padding:12px 24px;
+background:var(--main);
+color:white;
+text-decoration:none;
+border-radius:999px;
+}
+
+#products{
+max-width:1200px;
+margin:auto;
+padding:30px 20px;
+}
+
+.product-grid{
+display:grid;
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:16px;
+padding:16px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.card img{
+width:100%;
+border-radius:12px;
+}
+
+.price{
+font-size:24px;
+font-weight:bold;
+margin:10px 0;
+}
+
+button{
+width:100%;
+border:none;
+background:#61E0BC;
+color:white;
+padding:12px;
+border-radius:8px;
+}
+
+.info{
+padding:20px;
+}
+
+details{
+background:white;
+margin-bottom:12px;
+border-radius:10px;
+padding:15px;
+}
+
+footer{
+text-align:center;
+padding:30px;
+}
 
