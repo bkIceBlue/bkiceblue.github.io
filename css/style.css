@@ -13,12 +13,11 @@ color:var(--text);
 
 .hero{
 text-align:center;
-padding:1800px 800px;
+padding:40px 20px;
 }
 
 .logo-area img{
-width:1800px;
-   border:800px solid red;
+width:120px;
 }
 
 h1{
@@ -88,4 +87,3 @@ footer{
 text-align:center;
 padding:30px;
 }
-
