@@ -1,138 +1,180 @@
+```html
 <!DOCTYPE html>
-
 <html lang="zh-Hant">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>冰藍烘焙實驗室</title>
 
-<title>冰藍烘焙實驗室｜2026中秋禮盒預購</title>
+<link rel="stylesheet" href="style.css">
 
-<link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-<header class="hero">
-
-    <div class="logo-area">
+<header>
+    <div class="logo">
         <img src="images/logo4.png" alt="冰藍烘焙實驗室">
+        <span>冰藍烘焙實驗室</span>
     </div>
 
-    <p class="subtitle">
-        2026 中秋禮盒預購
-    </p>
-
+    <div class="cart-btn" onclick="toggleCart()">
+        🛒 <span id="cartCount">0</span>
+    </div>
 </header>
 
-<section id="products">
+<main>
 
+<section class="products">
 
-<h2>禮盒商品</h2>
+<h2>2026 中秋限定禮盒</h2>
 
 <div class="product-grid">
 
-    <div class="card">
-        <img src="images/egg-yolk.jpg" alt="蛋黃酥禮盒">
-        <h3>蛋黃酥禮盒</h3>
-        <p>8入裝</p>
-        <div class="price">$600</div>
-    </div>
+<div class="product-card">
+    <img src="images/egg-yolk.jpg">
+    <h3>蛋黃酥禮盒</h3>
+    <p>$600</p>
+    <button onclick="addProduct('蛋黃酥禮盒',600)">
+        加入購物車
+    </button>
+</div>
 
-    <div class="card">
-        <img src="images/taro-pastry.jpg" alt="芋頭酥禮盒">
-        <h3>芋頭酥禮盒</h3>
-        <p>8入裝</p>
-        <div class="price">$600</div>
-    </div>
+<div class="product-card">
+    <img src="images/taro-pastry.jpg">
+    <h3>芋頭酥禮盒</h3>
+    <p>$600</p>
+    <button onclick="addProduct('芋頭酥禮盒',600)">
+        加入購物車
+    </button>
+</div>
 
-    <div class="card">
-        <img src="images/mung-bean.jpg" alt="綠豆椪禮盒">
-        <h3>綠豆椪禮盒</h3>
-        <p>8入裝</p>
-        <div class="price">$600</div>
-    </div>
+<div class="product-card">
+    <img src="images/mung-bean.jpg">
+    <h3>綠豆椪禮盒</h3>
+    <p>$600</p>
+    <button onclick="addProduct('綠豆椪禮盒',600)">
+        加入購物車
+    </button>
+</div>    
 
-    <div class="card">
-        <img src="images/pork-pastry.jpg" alt="豆沙滷肉禮盒">
-        <h3>豆沙滷肉禮盒</h3>
-        <p>8入裝</p>
-        <div class="price">$600</div>
-    </div>
+<div class="product-card">
+    <img src="images/pork-pastry.jpg">
+    <h3>豆沙滷肉禮盒</h3>
+    <p>$600</p>
+    <button onclick="addProduct('豆沙滷肉禮盒',600)">
+        加入購物車
+    </button>
+</div>   
+    
+<div class="product-card">
+    <img src="images/halfhalfmixup.jpg">
+    <h3>綜合禮盒</h3>
+    <p>$600</p>
+    <button onclick="addProduct('綜合禮盒',600)">
+        加入購物車
+    </button>
+</div>
 
-    <div class="card">
-        <img src="images/halfhalfmixup.jpg" alt="綜合禮盒">
-        <h3>綜合禮盒</h3>
-        <p>8入裝｜自由搭配口味</p>
-        <div class="price">$600</div>
-    </div>
+<div class="product-card">
+    <img src="images/3q-cake.jpg">
+    <h3>3Q餅禮盒</h3>
+    <p>$400</p>
+    <button onclick="addProduct('3Q餅',400)">
+        加入購物車
+    </button>
+</div>    
+    
+<div class="product-card">
+    <img src="images/product4.jpg">
+    <h3>鳳梨酥禮盒</h3>
+    <p>$480</p>
+    <button onclick="addProduct('鳳梨酥禮盒',480)">
+        加入購物車
+    </button>
+</div>
 
-    <div class="card">
-        <img src="images/3q-cake.jpg" alt="3Q餅">
-        <h3>3Q餅禮盒</h3>
-        <p>5入裝</p>
-        <div class="price">$400</div>
-    </div>
-
-    <div class="card">
-        <img src="images/pineapple-cake.jpg" alt="土鳳梨酥">
-        <h3>土鳳梨酥禮盒</h3>
-        <p>8入裝</p>
-        <div class="price">$480</div>
-    </div>
-
-
-</section>
-
-<section class="info">
-
-
-<h2>訂購資訊</h2>
-
-<details>
-    <summary>保存方式與賞味期限</summary>
-
-    <p>
-    無添加防腐劑，收到後請低溫保存並盡速食用。<br>
-    常溫：製作日+3天<br>
-    冷藏：製作日+14天<br>
-    冷凍：製作日+30天
-    </p>
-
-</details>
-
-<details>
-    <summary>過敏原資訊</summary>
-
-    <p>
-    本產品可能含有乳製品、麩質、杏仁等過敏原。
-    </p>
-
-</details>
-
-<details>
-    <summary>配送與出貨說明</summary>
-
-    <p>
-    郵局常溫宅配運費80元。<br>
-    同地址滿6000元免運。<br>
-    9月13日起開始出貨。<br>
-    宅配最後寄件日：9月30日。<br>
-    自取最後出貨日：10月3日。
-    </p>
-
-</details>
-
+</div>
 
 </section>
 
-<footer>
+</main>
 
+<div class="cart-panel" id="cartPanel">
 
-© 2026 冰藍烘焙實驗室
+<h3>購物車</h3>
 
+<div id="cartItems"></div>
 
-</footer>
+<hr>
+
+<p>商品金額：$<span id="subtotal">0</span></p>
+
+<p>運費：$<span id="shipping">90</span></p>
+
+<p>總計：$<span id="total">90</span></p>
+
+<p class="freeShipping">
+距離免運還差 $<span id="remaining">6000</span>
+</p>
+
+</div>
+
+<script>
+
+let cart=[]
+const FREE_SHIPPING=6000
+const SHIPPING=90
+
+function addProduct(name,price){
+
+cart.push({
+name:name,
+price:price
+})
+
+updateCart()
+}
+
+function updateCart(){
+
+let subtotal=0
+let html=''
+
+cart.forEach(item=>{
+
+subtotal+=item.price
+
+html+=`
+<p>${item.name} - $${item.price}</p>
+`
+})
+
+document.getElementById('cartItems').innerHTML=html
+
+document.getElementById('subtotal').innerText=subtotal
+
+let shipping=subtotal>=FREE_SHIPPING ? 0 : SHIPPING
+
+document.getElementById('shipping').innerText=shipping
+
+document.getElementById('total').innerText=subtotal+shipping
+
+document.getElementById('remaining').innerText=
+Math.max(0,FREE_SHIPPING-subtotal)
+
+document.getElementById('cartCount').innerText=
+cart.length
+}
+
+function toggleCart(){
+
+document.getElementById('cartPanel')
+.classList.toggle('show')
+
+}
+
+</script>
 
 </body>
 </html>
+```
