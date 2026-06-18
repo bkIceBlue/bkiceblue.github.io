@@ -44,6 +44,11 @@ body{
     font-weight:600;
 }
 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
 .products{
     display:grid;
     grid-template-columns:repeat(2,1fr);
