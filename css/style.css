@@ -18,16 +18,16 @@ font-family:"Microsoft JhengHei",sans-serif;
 line-height:1.6;
 }
 
-.hero{
-padding:20px;
-text-align:center;
+..hero{
+    padding:10px 15px 25px;
 }
 
 .hero-logo{
-width:100%;
-max-width:1200px;
-display:block;
-margin:auto;
+    width:92%;
+    max-width:1000px;
+    height:auto;
+    display:block;
+    margin:0 auto;
 }
 
 .hero-text{
@@ -35,8 +35,7 @@ margin-top:15px;
 }
 
 .hero-text h1{
-margin:0;
-font-size:28px;
+    font-size:clamp(1.5rem,4vw,2.5rem);
 }
 
 .hero-text p{
