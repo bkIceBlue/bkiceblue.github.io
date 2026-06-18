@@ -79,6 +79,10 @@ margin:0 15px 10px;
 color:#666;
 }
 
+.card:hover{
+    transform:translateY(-5px);
+}
+
 .price{
 margin:0 15px 20px;
 font-size:24px;
