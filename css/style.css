@@ -417,6 +417,12 @@ footer {
     gap: 7px;
 }
 
+fieldset.form-group {
+    border: 0;
+    padding: 0;
+    margin: 0;
+}
+
 .form-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
