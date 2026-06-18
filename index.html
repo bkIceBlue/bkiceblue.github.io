@@ -77,6 +77,54 @@
 
     </main>
 
+    <script>
+const FREE_SHIPPING_THRESHOLD = 6000;
+const cart = {};
+
+document.querySelectorAll(".add-to-cart").forEach(button => {
+  button.addEventListener("click", () => {
+    const name = button.dataset.name;
+    const price = Number(button.dataset.price);
+
+    if (!cart[name]) {
+      cart[name] = { price, quantity: 0 };
+    }
+
+    cart[name].quantity += 1;
+    renderCart();
+  });
+});
+
+function renderCart() {
+  const cartItems = document.getElementById("cart-items");
+  const subtotalEl = document.getElementById("subtotal");
+  const messageEl = document.getElementById("free-shipping-message");
+
+  cartItems.innerHTML = "";
+
+  let subtotal = 0;
+
+  Object.entries(cart).forEach(([name, item]) => {
+    const lineTotal = item.price * item.quantity;
+    subtotal += lineTotal;
+
+    const li = document.createElement("li");
+    li.textContent = `${name} × ${item.quantity} = $${lineTotal}`;
+    cartItems.appendChild(li);
+  });
+
+  subtotalEl.textContent = `$${subtotal}`;
+
+  const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
+
+  if (remaining > 0) {
+    messageEl.textContent = `再買 $${remaining} 即可免運`;
+  } else {
+    messageEl.textContent = "已達免運門檻！";
+  }
+}
+        
+</script>
     <button class="cart-btn">
         🛒
     </button>
