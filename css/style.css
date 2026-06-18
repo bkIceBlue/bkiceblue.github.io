@@ -1,1 +1,87 @@
-/* IceBlue Bakery */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:
+        "Noto Sans TC",
+        sans-serif;
+
+    max-width:900px;
+    margin:auto;
+
+    padding:30px 20px 100px;
+}
+
+.header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:50px;
+}
+
+.logo{
+    font-size:2rem;
+    font-weight:700;
+}
+
+.year{
+    font-size:1rem;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:50px;
+}
+
+.hero h1{
+    font-size:2.5rem;
+}
+
+.products{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:20px;
+}
+
+.product-card{
+    height:220px;
+
+    border:1px solid #ddd;
+
+    border-radius:16px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:1.2rem;
+}
+
+.cart-btn{
+    position:fixed;
+
+    right:25px;
+    bottom:25px;
+
+    width:60px;
+    height:60px;
+
+    border:none;
+    border-radius:50%;
+
+    font-size:1.5rem;
+
+    cursor:pointer;
+}
+
+@media (max-width:768px){
+
+    .products{
+        grid-template-columns:1fr;
+    }
+
+}
