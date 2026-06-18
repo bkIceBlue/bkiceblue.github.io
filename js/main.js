@@ -1,5 +1,6 @@
 const SHIPPING_FEE = 90;
 const FREE_SHIPPING_THRESHOLD = 6000;
+const CART_STORAGE_KEY = "iceblue-cart";
 
 const cart = new Map();
 let selectedProduct = null;
@@ -16,6 +17,7 @@ const subtotalText = document.querySelector("#subtotal");
 const shippingText = document.querySelector("#shipping");
 const totalText = document.querySelector("#total");
 const freeShippingNote = document.querySelector("#free-shipping-note");
+const checkoutButton = document.querySelector("#checkout-button");
 
 const money = new Intl.NumberFormat("zh-TW", {
     style: "currency",
@@ -66,6 +68,7 @@ confirmAddButton.addEventListener("click", () => {
 
     currentItem.quantity += getQuantity();
     cart.set(selectedProduct.name, currentItem);
+    saveCart();
     cartPanel.classList.remove("collapsed");
     closeModal();
     renderCart();
@@ -75,12 +78,23 @@ document.querySelector(".cart-tab").addEventListener("click", () => {
     cartPanel.classList.toggle("collapsed");
 });
 
+checkoutButton.addEventListener("click", () => {
+    if (cart.size === 0) {
+        cartPanel.classList.remove("collapsed");
+        return;
+    }
+
+    saveCart();
+    window.location.href = "checkout.html";
+});
+
 document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !modal.hidden) {
         closeModal();
     }
 });
 
+loadCart();
 cartPanel.classList.add("collapsed");
 renderCart();
 
@@ -101,6 +115,7 @@ function renderCart() {
     const shipping = subtotal === 0 || subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
 
     cartCount.textContent = itemCount;
+    checkoutButton.disabled = items.length === 0;
     subtotalText.textContent = money.format(subtotal);
     shippingText.textContent = money.format(shipping);
     totalText.textContent = money.format(subtotal + shipping);
@@ -127,6 +142,7 @@ function renderCart() {
 
         row.querySelector(".remove-item").addEventListener("click", () => {
             cart.delete(item.name);
+            saveCart();
             renderCart();
         });
 
@@ -137,4 +153,23 @@ function renderCart() {
     freeShippingNote.textContent = remaining > 0
         ? `再買 ${money.format(remaining)} 即可免運`
         : "已達免運門檻";
+}
+
+function saveCart() {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify([...cart.values()]));
+}
+
+function loadCart() {
+    const savedCart = JSON.parse(localStorage.getItem(CART_STORAGE_KEY) || "[]");
+
+    savedCart.forEach((item) => {
+        if (item.name && Number(item.price) > 0 && Number(item.quantity) > 0) {
+            cart.set(item.name, {
+                name: item.name,
+                price: Number(item.price),
+                unit: item.unit || "",
+                quantity: Number(item.quantity)
+            });
+        }
+    });
 }
