@@ -55,25 +55,22 @@ img {
     gap:20px;
 }
 
-.product-card{
-
-    height:160px;
+.product-card {
+    height: 260px;
 
     background:white;
-
     border:none;
-
     border-radius:20px;
-
     box-shadow:
         0 4px 12px rgba(0,0,0,.06);
 
     display:flex;
+    flex-direction: column;
     justify-content:center;
     align-items:center;
+    gap: 8px;
 
     font-size:1.1rem;
-
     transition:.3s;
 }
 
