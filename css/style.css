@@ -1,4 +1,4 @@
-```css
+css
 *{
 margin:0;
 padding:0;
@@ -32,7 +32,6 @@ gap:10px;
 
 .logo img{
 height:48px;
-width:auto;
 }
 
 .logo span{
@@ -48,10 +47,10 @@ padding:20px;
 margin-bottom:20px;
 }
 
-.product-grid{
-display:grid;
-grid-template-columns:repeat(2,1fr);
-gap:15px;
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
 }
 
 .product-card{
@@ -106,6 +105,12 @@ display:none;
 display:block;
 }
 
+.cart-fab{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+}
+
 .freeShipping{
 margin-top:10px;
 color:#7FA8B3;
@@ -124,4 +129,3 @@ height:56px;
 }
 
 }
-```
