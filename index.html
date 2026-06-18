@@ -51,80 +51,77 @@
         加入購物車
     </button>
 
-            </div>
+ </div>
 
             <div class="product-card">
-                綠豆椪
-            </div>
+   <img src="images/mung-bean.jpg">
+                
+    <h3>綠豆椪</h3>
 
-            <div class="product-card">
-                豆沙滷肉
-            </div>
+    <p>$600 / 8入一盒</p>
 
-            <div class="product-card">
-                3Q餅
-            </div>
+    <button>
+        加入購物車
+    </button>
 
-            <div class="product-card">
-                綜合月餅
-            </div>
+ </div>
+            
+         <div class="product-card">
+   <img src="images/pork-pastry.jpg">
+                
+    <h3>豆沙滷肉</h3>
+
+    <p>$600 / 8入一盒</p>
+
+    <button>
+        加入購物車
+    </button>
+
+ </div>
+            
+         <div class="product-card">
+   <img src="images/3q-cake.jpg">
+                
+    <h3>3Q餅</h3>
+
+    <p>$400 / 5入一盒</p>
+
+    <button>
+        加入購物車
+    </button>
+
+ </div>
      
             <div class="product-card">
-                鳳梨酥
-            </div>
+  <img src="images/halfhalfmixup.jpg">
+
+    <h3>綜合月餅</h3>
+
+    <p>$600 / 8入一盒</p>
+
+    <button>
+        加入購物車
+    </button>
+
+ </div>
+            
+            <div class="product-card">
+  <img src="images/pineapple-cake.jpg">
+
+    <h3>鳳梨酥</h3>
+
+    <p>$480 / 8入一盒</p>
+
+    <button>
+        加入購物車
+    </button>
+
+ </div>
      
         </section>
 
     </main>
 
-    <script>
-const FREE_SHIPPING_THRESHOLD = 6000;
-const cart = {};
-
-document.querySelectorAll(".add-to-cart").forEach(button => {
-  button.addEventListener("click", () => {
-    const name = button.dataset.name;
-    const price = Number(button.dataset.price);
-
-    if (!cart[name]) {
-      cart[name] = { price, quantity: 0 };
-    }
-
-    cart[name].quantity += 1;
-    renderCart();
-  });
-});
-
-function renderCart() {
-  const cartItems = document.getElementById("cart-items");
-  const subtotalEl = document.getElementById("subtotal");
-  const messageEl = document.getElementById("free-shipping-message");
-
-  cartItems.innerHTML = "";
-
-  let subtotal = 0;
-
-  Object.entries(cart).forEach(([name, item]) => {
-    const lineTotal = item.price * item.quantity;
-    subtotal += lineTotal;
-
-    const li = document.createElement("li");
-    li.textContent = `${name} × ${item.quantity} = $${lineTotal}`;
-    cartItems.appendChild(li);
-  });
-
-  subtotalEl.textContent = `$${subtotal}`;
-
-  const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
-
-  if (remaining > 0) {
-    messageEl.textContent = `再買 $${remaining} 即可免運`;
-  } else {
-    messageEl.textContent = "已達免運門檻！";
-  }
-}
-        
-</script>
     <button class="cart-btn">
         🛒
     </button>
