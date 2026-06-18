@@ -3,158 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>冰藍烘焙實驗室</title>
-
-    <link rel="stylesheet" href="css/style.css?v=2">
+    <link rel="stylesheet" href="css/style.css?v=3">
 </head>
-
 <body>
-
-    <header class="header">
-        <div class="logo">
-            冰藍烘焙實驗室
-        </div>
-        
+    <header class="site-header">
+        <img class="logo-banner" src="images/logobanner.png" alt="冰藍烘焙實驗室">
     </header>
 
     <main>
-
         <section class="hero">
-            <h1>中秋禮盒</h1>
-</section>
-
-        <section class="products">
-
-            <div class="product-card">
-
-    <img src="images/egg-yolk.jpg">
-
-    <h3>蛋黃酥</h3>
-
-    <p>$600 / 8入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
-</div>
-
-            <div class="product-card">
-  <img src="images/taro-pastry.jpg">
-
-    <h3>芋頭酥</h3>
-
-    <p>$600 / 8入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
- </div>
-
-            <div class="product-card">
-   <img src="images/mung-bean.jpg">
-                
-    <h3>綠豆椪</h3>
-
-    <p>$600 / 8入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
- </div>
-            
-         <div class="product-card">
-   <img src="images/pork-pastry.jpg">
-                
-    <h3>豆沙滷肉</h3>
-
-    <p>$600 / 8入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
- </div>
-            
-         <div class="product-card">
-   <img src="images/3q-cake.jpg">
-                
-    <h3>3Q餅</h3>
-
-    <p>$400 / 5入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
- </div>
-     
-            <div class="product-card">
-  <img src="images/halfhalfmixup.jpg">
-
-    <h3>綜合月餅</h3>
-
-    <p>$600 / 8入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
- </div>
-            
-            <div class="product-card">
-  <img src="images/pineapple-cake.jpg">
-
-    <h3>鳳梨酥</h3>
-
-    <p>$480 / 8入一盒</p>
-
-    <button>
-        加入購物車
-    </button>
-
- </div>
-            
-        </section>
-        
-<details>
-    <summary>保存方式</summary>
-
-    <p>
-    無添加防腐劑，收到請冷藏保存並盡速食用。
-    </p>
-
-</details>
-
-<details>
-    <summary>過敏原資訊</summary>
-
-    <p>
-    本產品可能含有乳製品、麩質、杏仁。
-    </p>
-
-</details>
-
-<details>
-    <summary>配送方式</summary>
-
-    <p>
-    郵局常溫宅配運費80元，同地址滿6000元免運。
-    </p>
-
-</details>
-© 2026 冰藍烘焙實驗室
-            
+            <p>中秋禮盒</p>
+            <h1>手作月餅與節慶點心</h1>
         </section>
 
+        <section class="products" aria-label="商品列表">
+            <article class="product-card">
+                <img src="images/egg-yolk.jpg" alt="蛋黃酥">
+                <div class="product-info">
+                    <h2>蛋黃酥</h2>
+                    <p>$600 / 8入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="蛋黃酥" data-price="600" data-unit="8入一盒">加入購物車</button>
+            </article>
+
+            <article class="product-card">
+                <img src="images/taro-pastry.jpg" alt="芋頭酥">
+                <div class="product-info">
+                    <h2>芋頭酥</h2>
+                    <p>$600 / 8入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="芋頭酥" data-price="600" data-unit="8入一盒">加入購物車</button>
+            </article>
+
+            <article class="product-card">
+                <img src="images/mung-bean.jpg" alt="綠豆椪">
+                <div class="product-info">
+                    <h2>綠豆椪</h2>
+                    <p>$600 / 8入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="綠豆椪" data-price="600" data-unit="8入一盒">加入購物車</button>
+            </article>
+
+            <article class="product-card">
+                <img src="images/pork-pastry.jpg" alt="豆沙滷肉">
+                <div class="product-info">
+                    <h2>豆沙滷肉</h2>
+                    <p>$600 / 8入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="豆沙滷肉" data-price="600" data-unit="8入一盒">加入購物車</button>
+            </article>
+
+            <article class="product-card">
+                <img src="images/3q-cake.jpg" alt="3Q餅">
+                <div class="product-info">
+                    <h2>3Q餅</h2>
+                    <p>$400 / 5入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="3Q餅" data-price="400" data-unit="5入一盒">加入購物車</button>
+            </article>
+
+            <article class="product-card">
+                <img src="images/halfhalfmixup.jpg" alt="綜合月餅">
+                <div class="product-info">
+                    <h2>綜合月餅</h2>
+                    <p>$600 / 8入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="綜合月餅" data-price="600" data-unit="8入一盒">加入購物車</button>
+            </article>
+
+            <article class="product-card">
+                <img src="images/pineapple-cake.jpg" alt="鳳梨酥">
+                <div class="product-info">
+                    <h2>鳳梨酥</h2>
+                    <p>$480 / 8入一盒</p>
+                </div>
+                <button class="add-cart-btn" data-name="鳳梨酥" data-price="480" data-unit="8入一盒">加入購物車</button>
+            </article>
+        </section>
+
+        <section class="shop-notes" aria-label="購買資訊">
+            <details>
+                <summary>保存方式</summary>
+                <p>無添加防腐劑，收到請冷藏保存並盡速食用。</p>
+            </details>
+
+            <details>
+                <summary>過敏原資訊</summary>
+                <p>本產品可能含有乳製品、麩質、杏仁。</p>
+            </details>
+
+            <details>
+                <summary>配送方式</summary>
+                <p>郵局常溫宅配運費 $90，同地址商品金額滿 $6000 免運。</p>
+            </details>
+        </section>
     </main>
 
-    <button class="cart-btn">
-        🛒
-    </button>
+    <aside class="cart-panel" aria-live="polite">
+        <button class="cart-tab" type="button" aria-label="開關購物車">
+            <span>購物車</span>
+            <strong id="cart-count">0</strong>
+        </button>
+        <div class="cart-content">
+            <h2>購物車</h2>
+            <div id="cart-items" class="cart-items empty">尚未加入商品</div>
+            <dl class="cart-summary">
+                <div>
+                    <dt>商品金額</dt>
+                    <dd id="subtotal">$0</dd>
+                </div>
+                <div>
+                    <dt>運費</dt>
+                    <dd id="shipping">$0</dd>
+                </div>
+                <div class="total-row">
+                    <dt>合計</dt>
+                    <dd id="total">$0</dd>
+                </div>
+            </dl>
+            <p id="free-shipping-note" class="shipping-note">再買 $6000 即可免運</p>
+        </div>
+    </aside>
 
+    <div class="modal" id="quantity-modal" hidden>
+        <div class="modal-backdrop" data-close-modal></div>
+        <section class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+            <button class="modal-close" type="button" data-close-modal aria-label="關閉">x</button>
+            <p class="modal-label">加入購物車</p>
+            <h2 id="modal-title">商品名稱</h2>
+            <p id="modal-price" class="modal-price">$0</p>
+            <div class="quantity-control">
+                <button id="decrease-qty" type="button" aria-label="減少數量">-</button>
+                <input id="quantity-input" type="number" min="1" value="1" inputmode="numeric">
+                <button id="increase-qty" type="button" aria-label="增加數量">+</button>
+            </div>
+            <button id="confirm-add" class="confirm-add" type="button">加入購物車</button>
+        </section>
+    </div>
+
+    <footer>
+        <p>© 2026 冰藍烘焙實驗室</p>
+    </footer>
+
+    <script src="js/main.js?v=3"></script>
 </body>
 </html>
