@@ -56,7 +56,9 @@ function doPost(e) {
     order.itemsText,
     order.subtotal,
     order.shipping,
-    order.total
+    order.total,
+    order.paymentMethod,
+    order.paymentReference
   ]);
 
   return ContentService
@@ -93,11 +95,17 @@ function getOrderSheet() {
       "訂購內容",
       "商品金額",
       "運費",
-      "合計"
+      "合計",
+      "付款方式",
+      "付款核對資訊"
     ]);
   } else if (sheet.getRange(1, 1).getValue() !== "訂單編號") {
     sheet.insertColumnBefore(1);
     sheet.getRange(1, 1).setValue("訂單編號");
+  }
+
+  if (sheet.getRange(1, 16).getValue() !== "付款方式") {
+    sheet.getRange(1, 16, 1, 2).setValues([["付款方式", "付款核對資訊"]]);
   }
 
   return sheet;

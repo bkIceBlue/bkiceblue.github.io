@@ -20,7 +20,11 @@ const pickupOtherInput = document.querySelector("#pickup-other");
 const customerAddressInput = document.querySelector("#customer-address");
 const customerAddressLabel = document.querySelector("#customer-address-label");
 const isPaidInput = document.querySelector("#is-paid");
+const paymentMethodInput = document.querySelector("#payment-method");
+const bankReportFields = document.querySelector("#bank-report-fields");
 const bankLastFiveInput = document.querySelector("#bank-last-five");
+const linePayReportFields = document.querySelector("#linepay-report-fields");
+const linePayNameInput = document.querySelector("#linepay-name");
 const submitButton = document.querySelector(".submit-button");
 
 const money = new Intl.NumberFormat("zh-TW", {
@@ -50,6 +54,7 @@ document.querySelectorAll('input[name="pickupMethod"]').forEach((radio) => {
 });
 
 isPaidInput.addEventListener("change", updatePaidState);
+paymentMethodInput.addEventListener("change", updatePaidState);
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -166,11 +171,29 @@ function updatePickupOtherState() {
 }
 
 function updatePaidState() {
-    bankLastFiveInput.disabled = !isPaidInput.checked;
-    bankLastFiveInput.required = isPaidInput.checked;
+    const isPaid = isPaidInput.checked;
+    const isBankTransfer = isPaid && ["中華郵政轉帳", "玉山銀行轉帳"].includes(paymentMethodInput.value);
+    const isLinePay = isPaid && paymentMethodInput.value === "LINE Pay Money";
 
-    if (!isPaidInput.checked) {
+    paymentMethodInput.disabled = !isPaid;
+    paymentMethodInput.required = isPaid;
+    bankReportFields.hidden = !isBankTransfer;
+    bankLastFiveInput.disabled = !isBankTransfer;
+    bankLastFiveInput.required = isBankTransfer;
+    linePayReportFields.hidden = !isLinePay;
+    linePayNameInput.disabled = !isLinePay;
+    linePayNameInput.required = isLinePay;
+
+    if (!isPaid) {
+        paymentMethodInput.value = "";
+    }
+
+    if (!isBankTransfer) {
         bankLastFiveInput.value = "";
+    }
+
+    if (!isLinePay) {
+        linePayNameInput.value = "";
     }
 }
 
@@ -205,6 +228,8 @@ async function saveOrderToGoogleSheet(order, params) {
             pickupMethod: order.pickupMethod,
             shipDate: order.shipDate,
             isPaid: order.isPaid,
+            paymentMethod: order.paymentMethod,
+            paymentReference: order.paymentReference,
             bankLastFive: order.bankLastFive,
             orderNote: order.orderNote,
             itemsText: params.order_items,
@@ -265,6 +290,8 @@ function buildOrder(orderNumber) {
         pickupMethod,
         shipDate: data.get("shipDate"),
         isPaid: data.get("isPaid") ? "已付款" : "尚未付款",
+        paymentMethod: data.get("isPaid") ? data.get("paymentMethod") : "未選擇",
+        paymentReference: getPaymentReference(data),
         bankLastFive: data.get("bankLastFive") || "未填寫",
         orderNote: data.get("orderNote") || "無",
         items: cart,
@@ -283,6 +310,8 @@ function buildEmailParams(order) {
         pickup_method: order.pickupMethod,
         ship_date: order.shipDate,
         paid_status: order.isPaid,
+        payment_method: order.paymentMethod,
+        payment_reference: order.paymentReference,
         bank_last_five: order.bankLastFive,
         order_note: order.orderNote,
         order_items: order.items.map((item) => (
@@ -311,7 +340,8 @@ function formatOrder(order) {
         `取貨方式：${order.pickupMethod}`,
         `出貨日期：${order.shipDate}`,
         `付款狀態：${order.isPaid}`,
-        `帳號後五碼：${order.bankLastFive}`,
+        `付款方式：${order.paymentMethod}`,
+        `付款核對資訊：${order.paymentReference}`,
         `備註：${order.orderNote}`,
         "",
         "訂購內容：",
@@ -321,4 +351,16 @@ function formatOrder(order) {
         `運費：${money.format(order.totals.shipping)}`,
         `合計：${money.format(order.totals.total)}`
     ].join("\n");
+}
+
+function getPaymentReference(data) {
+    if (!data.get("isPaid")) {
+        return "尚未付款";
+    }
+
+    if (data.get("paymentMethod") === "LINE Pay Money") {
+        return `付款人：${data.get("linePayName")}`;
+    }
+
+    return `轉出帳號後五碼：${data.get("bankLastFive")}`;
 }

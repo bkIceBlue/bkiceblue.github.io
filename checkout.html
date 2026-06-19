@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>結帳 - 冰藍烘焙實驗室</title>
-    <link rel="stylesheet" href="css/style.css?v=7">
+    <link rel="stylesheet" href="css/style.css?v=10">
 </head>
 <body>
     <header class="site-header">
@@ -78,7 +78,19 @@
                         <input id="is-paid" type="checkbox" name="isPaid" value="已付款">
                         已付款
                     </label>
-                    <input id="bank-last-five" name="bankLastFive" placeholder="若已付款，請填帳號後五碼" maxlength="5" disabled>
+                    <select id="payment-method" name="paymentMethod" disabled>
+                        <option value="">請選擇付款方式</option>
+                        <option value="中華郵政轉帳">中華郵政轉帳</option>
+                        <option value="玉山銀行轉帳">玉山銀行轉帳</option>
+                        <option value="LINE Pay Money">LINE Pay Money</option>
+                    </select>
+                    <div id="bank-report-fields" class="payment-report-fields" hidden>
+                        <input id="bank-last-five" name="bankLastFive" inputmode="numeric" pattern="[0-9]{5}" placeholder="請填轉出帳號後五碼" maxlength="5" disabled>
+                    </div>
+                    <div id="linepay-report-fields" class="payment-report-fields" hidden>
+                        <input id="linepay-name" name="linePayName" placeholder="LINE Pay 付款人顯示名稱" disabled>
+                        <p class="hint">請填付款畫面顯示的名稱，方便核對款項。</p>
+                    </div>
                 </fieldset>
 
                 <div class="form-group">
@@ -94,24 +106,43 @@
                 </div>
             </form>
 
-            <aside class="order-card">
-                <h2>訂購內容</h2>
-                <div id="order-list" class="order-list"></div>
-                <dl class="cart-summary">
+            <aside class="order-sidebar">
+                <section class="order-card">
+                    <h2>訂購內容</h2>
+                    <div id="order-list" class="order-list"></div>
+                    <dl class="cart-summary">
+                        <div>
+                            <dt>商品金額</dt>
+                            <dd id="checkout-subtotal">$0</dd>
+                        </div>
+                        <div>
+                            <dt>運費</dt>
+                            <dd id="checkout-shipping">$0</dd>
+                        </div>
+                        <div class="total-row">
+                            <dt>合計</dt>
+                            <dd id="checkout-total">$0</dd>
+                        </div>
+                    </dl>
+                    <p id="checkout-note" class="shipping-note"></p>
+                </section>
+
+                <section class="payment-card" aria-labelledby="payment-info-title">
+                    <h2 id="payment-info-title">付款資訊</h2>
                     <div>
-                        <dt>商品金額</dt>
-                        <dd id="checkout-subtotal">$0</dd>
+                        <h3>中華郵政</h3>
+                        <p>銀行代碼 700<br>帳號 0281201-0074101</p>
                     </div>
-                    <div>
-                        <dt>運費</dt>
-                        <dd id="checkout-shipping">$0</dd>
+                    <div class="payment-method-info">
+                        <h3>玉山銀行</h3>
+                        <p>銀行代碼 808<br>帳號 1333-9791-82919</p>
                     </div>
-                    <div class="total-row">
-                        <dt>合計</dt>
-                        <dd id="checkout-total">$0</dd>
+                    <div class="payment-method-info">
+                        <h3>LINE Pay Money</h3>
+                        <p><a href="https://line.me/ti/p/~sientnymph" target="_blank" rel="noopener">開啟 LINE 聯絡付款</a></p>
                     </div>
-                </dl>
-                <p id="checkout-note" class="shipping-note"></p>
+                    <p class="shipping-note">請先確認取貨方式與訂單合計，再進行付款。</p>
+                </section>
             </aside>
         </section>
     </main>
@@ -121,6 +152,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="js/checkout.js?v=4"></script>
+    <script src="js/checkout.js?v=6"></script>
 </body>
 </html>
