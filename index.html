@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>冰藍烘焙實驗室</title>
-    <link rel="stylesheet" href="css/style.css?v=5">
+    <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
     <header class="site-header">
@@ -18,7 +18,16 @@
 
         <section class="products" aria-label="商品列表">
             <article class="product-card">
-                <img src="images/egg-yolk.jpg" alt="蛋黃酥">
+                <div class="product-gallery" data-carousel>
+                    <div class="carousel-track">
+                        <img src="images/egg-yolk.jpg" alt="蛋黃酥">
+                        <img src="images/egg-yolk2.jpg" alt="蛋黃酥切面與細節">
+                    </div>
+                    <div class="carousel-dots" aria-label="蛋黃酥圖片選擇">
+                        <button class="active" type="button" aria-label="查看第 1 張圖片"></button>
+                        <button type="button" aria-label="查看第 2 張圖片"></button>
+                    </div>
+                </div>
                 <div class="product-info">
                     <h2>蛋黃酥</h2>
                     <p>$600 / 8入一盒</p>
@@ -36,12 +45,12 @@
             </article>
 
             <article class="product-card">
-                <img src="images/mung-bean.jpg" alt="綠豆椪">
+                <img src="images/mung-bean.jpg" alt="清豆椪">
                 <div class="product-info">
-                    <h2>綠豆椪</h2>
+                    <h2>清豆椪</h2>
                     <p>$600 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="綠豆椪" data-price="600" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" data-name="清豆椪" data-price="600" data-unit="8入一盒">加入購物車</button>
             </article>
 
             <article class="product-card">
@@ -68,6 +77,7 @@
                 <div class="product-info">
                     <h2>綜合月餅</h2>
                     <p>$600 / 8入一盒</p>
+                    <p class="product-note">餅香4溢組：蛋黃酥、芋頭酥、清豆椪、豆沙滷肉各 2 顆</p>
                 </div>
                 <button class="add-cart-btn" data-name="綜合月餅" data-price="600" data-unit="8入一盒" data-mix="true">加入購物車</button>
             </article>
@@ -84,26 +94,51 @@
 
         <section class="shop-notes" aria-label="購買資訊">
             <details>
-                <summary>保存方式</summary>
-                <ul>
-                    <li>無添加防腐劑，開封後請盡速食用完畢。</li>
-                    <li>最佳賞味期：常溫為製作日加 3 天，冷藏為製作日加 14 天，冷凍為製作日加 30 天。</li>
-                    <li>最佳賞味期不是保存期限。秋季天氣仍炎熱，收到月餅請務必低溫保存，避免變質。</li>
+                <summary>產品成分</summary>
+                <div class="ingredient-list">
+                    <section>
+                        <h3>蛋黃酥 <span>奶蛋素</span></h3>
+                        <p>麵粉、糖粉、發酵奶油、無水奶油、水、烏豆沙、鹹蛋黃、黑芝麻。</p>
+                    </section>
+                    <section>
+                        <h3>芋頭酥 <span>奶蛋素</span></h3>
+                        <p>麵粉、糖粉、發酵奶油、無水奶油、水、紫薯粉、芋頭餡、麻糬。</p>
+                    </section>
+                    <section>
+                        <h3>清豆椪 <span>奶蛋素</span></h3>
+                        <p>麵粉、糖粉、發酵奶油、無水奶油、水、綠豆沙。</p>
+                    </section>
+                    <section>
+                        <h3>豆沙滷肉 <span class="meat-label">葷食</span></h3>
+                        <p>麵粉、糖粉、發酵奶油、無水奶油、水、綠豆沙、豬肉、自製油蔥酥、白芝麻、白胡椒、醬油、糖。</p>
+                    </section>
+                    <section>
+                        <h3>3Q餅 <span class="meat-label">葷食</span></h3>
+                        <p>麵粉、糖粉、發酵奶油、無水奶油、水、烏豆沙、麻糬、肉脯、鹹蛋黃、白芝麻。</p>
+                    </section>
+                    <section>
+                        <h3>鳳梨酥 <span>奶蛋素</span></h3>
+                        <p>麵粉、發酵奶油、杏仁粉、糖粉、蛋、鹽、土鳳梨餡。</p>
+                    </section>
+                </div>
+                <ul class="product-reminders">
+                    <li>所有產品皆含透明上蓋、封口套袋與脫氧劑。</li>
+                    <li>脫氧劑不可食用，請放置於幼兒不可觸及的地方。</li>
                 </ul>
             </details>
 
             <details>
-                <summary>產品說明</summary>
+                <summary>保存方式</summary>
                 <ul>
-                    <li>蛋黃酥 [奶蛋素]：麵粉、糖粉、發酵奶油、無水奶油、水、烏豆沙、鹹蛋黃、黑芝麻。</li>
-                    <li>芋頭酥 [奶蛋素]：麵粉、糖粉、發酵奶油、無水奶油、水、紫薯粉、芋頭餡、麻糬。</li>
-                    <li>清豆椪 [奶蛋素]：麵粉、糖粉、發酵奶油、無水奶油、水、綠豆沙。</li>
-                    <li>🍖 豆沙滷肉 [葷食]：麵粉、糖粉、發酵奶油、無水奶油、水、綠豆沙、豬肉、自製油蔥酥、白芝麻、白胡椒、醬油、糖。</li>
-                    <li>🍖 3Q餅 [葷食]：麵粉、糖粉、發酵奶油、無水奶油、水、烏豆沙、麻糬、肉脯、鹹蛋黃、白芝麻。</li>
-                    <li>鳳梨酥 [奶蛋素]：麵粉、發酵奶油、杏仁粉、糖粉、蛋、鹽、鳳梨餡。</li>
-                    <li>所有產品皆含透明上蓋、封口套袋與脫氧劑。</li>
-                    <li>脫氧劑不可食用，請放置於幼兒不可觸及的地方。</li>
+                    <li>無添加防腐劑，開封後請盡速食用完畢。</li>
+                    <li>最佳賞味期：常溫為製作日<strong>+ 3 天</strong>，冷藏為製作日<strong>+ 14 天</strong>，冷凍為製作日<strong>+ 30 天</strong>。</li>
+                    <li>最佳賞味期不是保存期限。秋季天氣炎熱，收到月餅請務必低溫保存，避免變質。</li>
                 </ul>
+            </details>
+
+            <details>
+                <summary>過敏原資訊</summary>
+                <p>本產品可能含有乳製品、麩質、杏仁。</p>
             </details>
 
             <details>
@@ -184,16 +219,16 @@
                     芋頭酥4
                 </label>
                 <label>
-                    <input type="checkbox" name="mixOption" value="綠豆椪4">
-                    綠豆椪4
+                    <input type="checkbox" name="mixOption" value="清豆椪4">
+                    清豆椪4
                 </label>
                 <label>
                     <input type="checkbox" name="mixOption" value="豆沙滷肉4">
                     豆沙滷肉4
                 </label>
                 <label>
-                    <input id="mix-preset" type="checkbox" name="mixPreset" value="餅香4溢組（各兩顆）">
-                    餅香4溢組（各兩顆）
+                    <input id="mix-preset" type="checkbox" name="mixPreset" value="餅香4溢組（四款各兩顆）">
+                    餅香4溢組（四款各兩顆）
                 </label>
                 <span id="mix-message" class="mix-message"></span>
             </div>
@@ -210,6 +245,6 @@
         <p>© 2026 冰藍烘焙實驗室</p>
     </footer>
 
-    <script src="js/main.js?v=7"></script>
+    <script src="js/main.js?v=8"></script>
 </body>
 </html>

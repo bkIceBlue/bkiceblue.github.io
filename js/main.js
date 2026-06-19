@@ -31,6 +31,8 @@ const money = new Intl.NumberFormat("zh-TW", {
     maximumFractionDigits: 0
 });
 
+initializeCarousels();
+
 document.querySelectorAll(".add-cart-btn").forEach((button) => {
     button.addEventListener("click", () => {
         selectedProduct = {
@@ -149,6 +151,67 @@ renderCart();
 function getQuantity() {
     const quantity = Number.parseInt(quantityInput.value, 10);
     return Number.isFinite(quantity) && quantity > 0 ? quantity : 1;
+}
+
+function initializeCarousels() {
+    document.querySelectorAll("[data-carousel]").forEach((carousel) => {
+        const track = carousel.querySelector(".carousel-track");
+        const images = [...track.querySelectorAll("img")];
+        const dots = [...carousel.querySelectorAll(".carousel-dots button")];
+        let currentIndex = 0;
+        let timer = null;
+
+        const showImage = (index) => {
+            if (images.length < 2) return;
+
+            currentIndex = (index + images.length) % images.length;
+            track.scrollTo({
+                left: track.clientWidth * currentIndex,
+                behavior: "smooth"
+            });
+            dots.forEach((dot, dotIndex) => {
+                dot.classList.toggle("active", dotIndex === currentIndex);
+            });
+        };
+
+        const startTimer = () => {
+            window.clearInterval(timer);
+            timer = window.setInterval(() => showImage(currentIndex + 1), 5000);
+        };
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener("click", () => {
+                showImage(index);
+                startTimer();
+            });
+        });
+
+        track.addEventListener("scroll", () => {
+            if (!track.clientWidth) return;
+
+            currentIndex = Math.round(track.scrollLeft / track.clientWidth);
+            dots.forEach((dot, dotIndex) => {
+                dot.classList.toggle("active", dotIndex === currentIndex);
+            });
+        }, { passive: true });
+
+        images.forEach((image, index) => {
+            image.addEventListener("error", () => {
+                image.remove();
+                dots[index]?.remove();
+                if (track.querySelectorAll("img").length < 2) {
+                    carousel.querySelector(".carousel-dots").hidden = true;
+                    window.clearInterval(timer);
+                }
+            }, { once: true });
+        });
+
+        carousel.addEventListener("mouseenter", () => window.clearInterval(timer));
+        carousel.addEventListener("mouseleave", startTimer);
+        carousel.addEventListener("touchstart", () => window.clearInterval(timer), { passive: true });
+        carousel.addEventListener("touchend", startTimer, { passive: true });
+        startTimer();
+    });
 }
 
 function closeModal() {
@@ -286,12 +349,31 @@ function renderCart() {
         row.innerHTML = `
             <h3>${item.name}</h3>
             <button class="remove-item" type="button" aria-label="移除 ${item.name}">x</button>
-            <p>${money.format(item.price)} x ${item.quantity}</p>
-            <span>${money.format(item.price * item.quantity)}</span>
+            <p>${money.format(item.price)} / ${item.unit || "份"}</p>
+            <div class="cart-item-controls" aria-label="${item.name}數量">
+                <button class="decrease-item" type="button" aria-label="減少 ${item.name} 數量">-</button>
+                <span>${item.quantity}</span>
+                <button class="increase-item" type="button" aria-label="增加 ${item.name} 數量">+</button>
+            </div>
+            <strong class="cart-item-total">${money.format(item.price * item.quantity)}</strong>
         `;
 
         row.querySelector(".remove-item").addEventListener("click", () => {
             cart.delete(item.name);
+            saveCart();
+            renderCart();
+        });
+
+        row.querySelector(".decrease-item").addEventListener("click", () => {
+            item.quantity = Math.max(1, item.quantity - 1);
+            cart.set(item.name, item);
+            saveCart();
+            renderCart();
+        });
+
+        row.querySelector(".increase-item").addEventListener("click", () => {
+            item.quantity += 1;
+            cart.set(item.name, item);
             saveCart();
             renderCart();
         });
@@ -314,8 +396,9 @@ function loadCart() {
 
     savedCart.forEach((item) => {
         if (item.name && Number(item.price) > 0 && Number(item.quantity) > 0) {
-            cart.set(item.name, {
-                name: item.name,
+            const normalizedName = item.name.replaceAll("綠豆椪", "清豆椪");
+            cart.set(normalizedName, {
+                name: normalizedName,
                 price: Number(item.price),
                 unit: item.unit || "",
                 quantity: Number(item.quantity)

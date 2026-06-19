@@ -41,7 +41,7 @@ button {
 }
 
 .logo-banner {
-    width: min(420px, 88vw);
+    width: min(504px, 96vw);
     height: auto;
     display: block;
 }
@@ -58,9 +58,9 @@ main {
 
 .hero h1 {
     color: var(--accent-dark);
-    font-size: clamp(2.1rem, 5vw, 3.2rem);
+    font-size: 2.5rem;
     line-height: 1.25;
-    letter-spacing: .08em;
+    letter-spacing: 0;
 }
 
 .products {
@@ -91,6 +91,51 @@ main {
     border-radius: 8px;
 }
 
+.product-gallery {
+    width: 100%;
+    max-width: 210px;
+    display: grid;
+    gap: 8px;
+}
+
+.carousel-track {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    border-radius: 8px;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-track img {
+    max-width: none;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 7px;
+}
+
+.carousel-dots button {
+    width: 8px;
+    height: 8px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--line);
+    padding: 0;
+}
+
+.carousel-dots button.active {
+    background: var(--accent-dark);
+}
+
 .product-info {
     display: grid;
     gap: 5px;
@@ -103,6 +148,12 @@ main {
 .product-info p {
     color: var(--muted);
     font-size: .98rem;
+}
+
+.product-info .product-note {
+    max-width: 19em;
+    font-size: .78rem;
+    line-height: 1.45;
 }
 
 .add-cart-btn,
@@ -164,6 +215,45 @@ details li.warning-note {
 details a {
     color: var(--accent-dark);
     font-weight: 700;
+}
+
+.ingredient-list {
+    display: grid;
+    gap: 14px;
+    margin-top: 14px;
+}
+
+.ingredient-list section {
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 12px;
+}
+
+.ingredient-list h3 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 1rem;
+}
+
+.ingredient-list h3 span {
+    color: var(--accent-dark);
+    background: #eaf3f6;
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: .78rem;
+}
+
+.ingredient-list h3 .meat-label {
+    color: #8a4537;
+    background: #f8e9e4;
+}
+
+.ingredient-list p {
+    margin-top: 6px;
+}
+
+.product-reminders {
+    margin-top: 14px;
 }
 
 .cart-panel {
@@ -253,6 +343,33 @@ details a {
 .cart-item span {
     color: var(--muted);
     font-size: .9rem;
+}
+
+.cart-item-controls {
+    display: grid;
+    grid-template-columns: 28px 30px 28px;
+    gap: 4px;
+    align-items: center;
+}
+
+.cart-item-controls button {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    color: var(--accent-dark);
+    background: #fff;
+    font-weight: 800;
+}
+
+.cart-item-controls span {
+    text-align: center;
+    font-weight: 700;
+}
+
+.cart-item-total {
+    justify-self: end;
+    font-weight: 700;
 }
 
 .remove-item {
@@ -607,6 +724,14 @@ fieldset.form-group {
 
     .product-card img {
         max-width: none;
+    }
+
+    .product-gallery {
+        max-width: none;
+    }
+
+    .hero h1 {
+        font-size: 1.85rem;
     }
 
     .product-info h2 {

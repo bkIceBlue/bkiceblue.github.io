@@ -17,6 +17,8 @@ const checkoutNote = document.querySelector("#checkout-note");
 const statusText = document.querySelector("#form-status");
 const pickupOtherRadio = document.querySelector("#pickup-other-radio");
 const pickupOtherInput = document.querySelector("#pickup-other");
+const customerAddressInput = document.querySelector("#customer-address");
+const customerAddressLabel = document.querySelector("#customer-address-label");
 const isPaidInput = document.querySelector("#is-paid");
 const bankLastFiveInput = document.querySelector("#bank-last-five");
 const submitButton = document.querySelector(".submit-button");
@@ -37,6 +39,8 @@ if (window.emailjs) {
 }
 
 renderOrder();
+updatePickupOtherState();
+updatePaidState();
 
 document.querySelectorAll('input[name="pickupMethod"]').forEach((radio) => {
     radio.addEventListener("change", () => {
@@ -63,9 +67,6 @@ form.addEventListener("submit", async (event) => {
         return;
     }
 
-    const order = buildOrder();
-    const params = buildEmailParams(order);
-
     if (!window.emailjs) {
         statusText.textContent = "Email 服務尚未載入，請重新整理後再試一次。";
         return;
@@ -73,17 +74,29 @@ form.addEventListener("submit", async (event) => {
 
     submitButton.disabled = true;
     submitButton.textContent = "送出中...";
-    statusText.textContent = "訂單送出中，請稍候。";
+    statusText.textContent = "正在建立訂單編號，請稍候。";
 
     try {
-        await emailjs.send(EMAILJS_SERVICE_ID, SHOP_TEMPLATE_ID, params);
+        const orderNumber = await requestOrderNumber();
+        const order = buildOrder(orderNumber);
+        const params = buildEmailParams(order);
 
-        if (order.customerEmail) {
-            await emailjs.send(EMAILJS_SERVICE_ID, CUSTOMER_TEMPLATE_ID, params);
-        }
+        statusText.textContent = `訂單 ${orderNumber} 送出中，請稍候。`;
+        await emailjs.send(EMAILJS_SERVICE_ID, SHOP_TEMPLATE_ID, params);
 
         if (GOOGLE_SCRIPT_URL) {
             await saveOrderToGoogleSheet(order, params);
+        }
+
+        let customerMailNote = "客人未填 Email，所以只寄送店家通知信。";
+        if (order.customerEmail) {
+            try {
+                await emailjs.send(EMAILJS_SERVICE_ID, CUSTOMER_TEMPLATE_ID, params);
+                customerMailNote = "確認信也已寄給客人。";
+            } catch (customerMailError) {
+                console.error(customerMailError);
+                customerMailNote = "訂單已成立，但客人確認信暫時未能寄出。";
+            }
         }
 
         localStorage.removeItem(CART_STORAGE_KEY);
@@ -93,12 +106,11 @@ form.addEventListener("submit", async (event) => {
         form.reset();
         updatePickupOtherState();
         updatePaidState();
-        const customerMailNote = order.customerEmail ? "確認信也已寄給客人。" : "客人未填 Email，所以只寄送店家通知信。";
         const sheetNote = GOOGLE_SCRIPT_URL ? "訂單也已寫入統計表。" : "統計表尚未串接。";
-        statusText.textContent = `訂單已送出，${customerMailNote}${sheetNote}`;
+        statusText.textContent = `訂單 ${orderNumber} 已送出。${customerMailNote}${sheetNote}`;
     } catch (error) {
         console.error(error);
-        statusText.textContent = "訂單沒有成功送出，請稍後再試，或直接聯絡冰藍烘焙實驗室。";
+        statusText.textContent = "訂單沒有成功送出。請確認 Google Apps Script 已更新部署，再稍後重試。";
     } finally {
         submitButton.disabled = false;
         submitButton.textContent = "送出訂單";
@@ -129,7 +141,9 @@ function renderOrder() {
     shippingText.textContent = money.format(totals.shipping);
     totalText.textContent = money.format(totals.total);
 
-    if (getSelectedPickupMethod() !== "宅配") {
+    if (!getSelectedPickupMethod()) {
+        checkoutNote.textContent = "請先選擇取貨方式，系統會自動計算運費。";
+    } else if (getSelectedPickupMethod() !== "宅配") {
         checkoutNote.textContent = "自取與其他取貨方式不收運費。";
     } else if (totals.subtotal >= FREE_SHIPPING_THRESHOLD) {
         checkoutNote.textContent = "已達宅配免運門檻。";
@@ -140,8 +154,11 @@ function renderOrder() {
 
 function updatePickupOtherState() {
     const isOther = pickupOtherRadio.checked;
+    const isDelivery = getSelectedPickupMethod() === "宅配";
     pickupOtherInput.disabled = !isOther;
     pickupOtherInput.required = isOther;
+    customerAddressInput.required = isDelivery;
+    customerAddressLabel.textContent = isDelivery ? "地址 *" : "地址";
 
     if (!isOther) {
         pickupOtherInput.value = "";
@@ -180,6 +197,7 @@ async function saveOrderToGoogleSheet(order, params) {
             "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify({
+            orderNumber: order.orderNumber,
             customerName: order.customerName,
             customerPhone: order.customerPhone,
             customerEmail: order.customerEmail || "",
@@ -198,7 +216,40 @@ async function saveOrderToGoogleSheet(order, params) {
     });
 }
 
-function buildOrder() {
+function requestOrderNumber() {
+    return new Promise((resolve, reject) => {
+        const callbackName = `iceblueOrderNumber_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+        const script = document.createElement("script");
+        const timeout = window.setTimeout(() => {
+            cleanup();
+            reject(new Error("取得訂單編號逾時"));
+        }, 12000);
+
+        const cleanup = () => {
+            window.clearTimeout(timeout);
+            script.remove();
+            delete window[callbackName];
+        };
+
+        window[callbackName] = (result) => {
+            cleanup();
+            if (result?.ok && result.orderNumber) {
+                resolve(result.orderNumber);
+            } else {
+                reject(new Error("無法取得訂單編號"));
+            }
+        };
+
+        script.onerror = () => {
+            cleanup();
+            reject(new Error("訂單編號服務連線失敗"));
+        };
+        script.src = `${GOOGLE_SCRIPT_URL}?action=nextOrderNumber&callback=${encodeURIComponent(callbackName)}`;
+        document.head.append(script);
+    });
+}
+
+function buildOrder(orderNumber) {
     const data = new FormData(form);
     const pickupMethod = data.get("pickupMethod") === "其他"
         ? `其他：${data.get("pickupOther")}`
@@ -206,6 +257,7 @@ function buildOrder() {
     totals = getTotals(cart, data.get("pickupMethod"));
 
     return {
+        orderNumber,
         customerName: data.get("customerName"),
         customerPhone: data.get("customerPhone"),
         customerAddress: data.get("customerAddress") || "未填寫",
@@ -223,6 +275,7 @@ function buildOrder() {
 function buildEmailParams(order) {
     return {
         shop_email: SHOP_EMAIL,
+        order_number: order.orderNumber,
         customer_name: order.customerName,
         customer_phone: order.customerPhone,
         customer_email: order.customerEmail || "未填寫",
@@ -250,6 +303,7 @@ function formatOrder(order) {
     return [
         "冰藍烘焙實驗室訂單確認",
         "",
+        `訂單編號：${order.orderNumber}`,
         `姓名：${order.customerName}`,
         `電話：${order.customerPhone}`,
         `地址：${order.customerAddress}`,

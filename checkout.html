@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>結帳 - 冰藍烘焙實驗室</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=7">
 </head>
 <body>
     <header class="site-header">
@@ -31,8 +31,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="customer-address">地址</label>
+                    <label id="customer-address-label" for="customer-address">地址</label>
                     <input id="customer-address" name="customerAddress" autocomplete="street-address">
+                    <p class="hint">選擇宅配時為必填。</p>
                 </div>
 
                 <div class="form-group">
@@ -120,6 +121,6 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-    <script src="js/checkout.js?v=3"></script>
+    <script src="js/checkout.js?v=4"></script>
 </body>
 </html>
