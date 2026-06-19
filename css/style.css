@@ -157,6 +157,10 @@ details ul {
     margin: 10px 0 0 1.1em;
 }
 
+details li.warning-note {
+    list-style: none;
+}
+
 details a {
     color: var(--accent-dark);
     font-weight: 700;
@@ -364,6 +368,47 @@ details a {
     color: var(--muted);
 }
 
+.variant-options,
+.mix-options {
+    display: grid;
+    gap: 9px;
+}
+
+.variant-options[hidden],
+.mix-options[hidden] {
+    display: none;
+}
+
+.variant-options p,
+.mix-options p,
+.mix-message {
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.5;
+}
+
+.variant-options label,
+.mix-options label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .76);
+    padding: 10px 12px;
+    font-weight: 700;
+}
+
+.variant-options input,
+.mix-options input {
+    width: auto;
+}
+
+.mix-message {
+    color: var(--warm);
+    font-weight: 700;
+}
+
 .quantity-control {
     display: grid;
     grid-template-columns: 44px 1fr 44px;
@@ -500,6 +545,11 @@ fieldset.form-group {
     color: #fff;
     background: var(--accent-dark);
     border: 0;
+}
+
+.submit-button:disabled {
+    cursor: not-allowed;
+    opacity: .65;
 }
 
 .order-card h2 {

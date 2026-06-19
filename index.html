@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>冰藍烘焙實驗室</title>
-    <link rel="stylesheet" href="css/style.css?v=4">
+    <link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
     <header class="site-header">
@@ -58,8 +58,9 @@
                 <div class="product-info">
                     <h2>3Q餅</h2>
                     <p>$400 / 5入一盒</p>
+                    <p>$85 / 單顆</p>
                 </div>
-                <button class="add-cart-btn" data-name="3Q餅" data-price="400" data-unit="5入一盒">加入購物車</button>
+                <button class="add-cart-btn" data-name="3Q餅" data-price="400" data-unit="5入一盒" data-variants="3q">加入購物車</button>
             </article>
 
             <article class="product-card">
@@ -68,7 +69,7 @@
                     <h2>綜合月餅</h2>
                     <p>$600 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="綜合月餅" data-price="600" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" data-name="綜合月餅" data-price="600" data-unit="8入一盒" data-mix="true">加入購物車</button>
             </article>
 
             <article class="product-card">
@@ -92,21 +93,36 @@
             </details>
 
             <details>
-                <summary>過敏原資訊</summary>
-                <p>本產品可能含有乳製品、麩質、杏仁。</p>
+                <summary>產品說明</summary>
+                <ul>
+                    <li>蛋黃酥 [奶蛋素]：麵粉、糖粉、發酵奶油、無水奶油、水、烏豆沙、鹹蛋黃、黑芝麻。</li>
+                    <li>芋頭酥 [奶蛋素]：麵粉、糖粉、發酵奶油、無水奶油、水、紫薯粉、芋頭餡、麻糬。</li>
+                    <li>清豆椪 [奶蛋素]：麵粉、糖粉、發酵奶油、無水奶油、水、綠豆沙。</li>
+                    <li>🍖 豆沙滷肉 [葷食]：麵粉、糖粉、發酵奶油、無水奶油、水、綠豆沙、豬肉、自製油蔥酥、白芝麻、白胡椒、醬油、糖。</li>
+                    <li>🍖 3Q餅 [葷食]：麵粉、糖粉、發酵奶油、無水奶油、水、烏豆沙、麻糬、肉脯、鹹蛋黃、白芝麻。</li>
+                    <li>鳳梨酥 [奶蛋素]：麵粉、發酵奶油、杏仁粉、糖粉、蛋、鹽、鳳梨餡。</li>
+                    <li>所有產品皆含透明上蓋、封口套袋與脫氧劑。</li>
+                    <li>脫氧劑不可食用，請放置於幼兒不可觸及的地方。</li>
+                </ul>
             </details>
 
             <details>
-                <summary>配送方式</summary>
-                <p>郵局常溫宅配運費 $90，同地址商品金額滿 $6000 免運。</p>
+                <summary>配送與自取</summary>
+                <ul>
+                    <li>工作室自取：桃園市中壢區過嶺路二段192巷37弄19號</li>
+                    <li class="warning-note">⚠️ 社區有門禁，請於 <a href="https://maps.app.goo.gl/pdcgVTCwLY1zM1H39" target="_blank" rel="noopener" aria-label="土地公門口 Google Map">🗺️</a> 土地公門口碰面交貨。</li>
+                    <li>龍岡自取：桃園市中壢區龍岡路三段124巷59號。</li>
+                    <li class="warning-note">⚠️ 自取需先聯繫預約取貨時間，避免該地點沒人在，空跑一趟。</li>
+                    <li>貨運速度是出貨日加 1 至 2 天，物流現在不保證出貨隔日送達，宅配務必算好日期。</li>
+                </ul>
             </details>
 
             <details>
                 <summary>付款方式</summary>
                 <ul>
                     <li>轉帳：中華郵政 700，帳號 0281201-0074101</li>
-                    <li>轉帳：玉山銀行 808，帳號 1333979182919</li>
-                    <li>LinePay Money：<a href="https://line.me/ti/p/~sientnymph" target="_blank" rel="noopener">點擊加入帳號</a>，ID：sientnymph</li>
+                    <li>轉帳：玉山銀行 808，帳號 1333-9791-82919</li>
+                    <li>LinePay Money：<a href="https://line.me/ti/p/~sientnymph" target="_blank" rel="noopener">點擊加入帳號</a></li>
                 </ul>
             </details>
         </section>
@@ -134,7 +150,7 @@
                     <dd id="total">$0</dd>
                 </div>
             </dl>
-            <p id="free-shipping-note" class="shipping-note">再買 $6000 即可免運</p>
+            <p id="free-shipping-note" class="shipping-note">宅配運費於結帳選擇宅配時計算。</p>
             <button id="checkout-button" class="checkout-button" type="button">開始結帳</button>
         </div>
     </aside>
@@ -146,6 +162,41 @@
             <p class="modal-label">加入購物車</p>
             <h2 id="modal-title">商品名稱</h2>
             <p id="modal-price" class="modal-price">$0</p>
+            <div id="variant-options" class="variant-options" hidden>
+                <p>請選擇購買方式</p>
+                <label>
+                    <input type="radio" name="productVariant" value="box" checked>
+                    5入一盒｜$400
+                </label>
+                <label>
+                    <input type="radio" name="productVariant" value="single">
+                    單顆｜$85
+                </label>
+            </div>
+            <div id="mix-options" class="mix-options" hidden>
+                <p>每盒請選兩組 4 入，或選餅香4溢組。</p>
+                <label>
+                    <input type="checkbox" name="mixOption" value="蛋黃酥4">
+                    蛋黃酥4
+                </label>
+                <label>
+                    <input type="checkbox" name="mixOption" value="芋頭酥4">
+                    芋頭酥4
+                </label>
+                <label>
+                    <input type="checkbox" name="mixOption" value="綠豆椪4">
+                    綠豆椪4
+                </label>
+                <label>
+                    <input type="checkbox" name="mixOption" value="豆沙滷肉4">
+                    豆沙滷肉4
+                </label>
+                <label>
+                    <input id="mix-preset" type="checkbox" name="mixPreset" value="餅香4溢組（各兩顆）">
+                    餅香4溢組（各兩顆）
+                </label>
+                <span id="mix-message" class="mix-message"></span>
+            </div>
             <div class="quantity-control">
                 <button id="decrease-qty" type="button" aria-label="減少數量">-</button>
                 <input id="quantity-input" type="number" min="1" value="1" inputmode="numeric">
@@ -159,6 +210,6 @@
         <p>© 2026 冰藍烘焙實驗室</p>
     </footer>
 
-    <script src="js/main.js?v=4"></script>
+    <script src="js/main.js?v=7"></script>
 </body>
 </html>

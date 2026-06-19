@@ -10,6 +10,12 @@ const modalTitle = document.querySelector("#modal-title");
 const modalPrice = document.querySelector("#modal-price");
 const quantityInput = document.querySelector("#quantity-input");
 const confirmAddButton = document.querySelector("#confirm-add");
+const variantOptions = document.querySelector("#variant-options");
+const variantInputs = document.querySelectorAll('input[name="productVariant"]');
+const mixOptions = document.querySelector("#mix-options");
+const mixMessage = document.querySelector("#mix-message");
+const mixPreset = document.querySelector("#mix-preset");
+const mixChoiceInputs = document.querySelectorAll('input[name="mixOption"]');
 const cartPanel = document.querySelector(".cart-panel");
 const cartItems = document.querySelector("#cart-items");
 const cartCount = document.querySelector("#cart-count");
@@ -30,12 +36,18 @@ document.querySelectorAll(".add-cart-btn").forEach((button) => {
         selectedProduct = {
             name: button.dataset.name,
             price: Number(button.dataset.price),
-            unit: button.dataset.unit
+            unit: button.dataset.unit,
+            variantType: button.dataset.variants || "",
+            isMix: button.dataset.mix === "true"
         };
 
         quantityInput.value = 1;
-        modalTitle.textContent = selectedProduct.name;
-        modalPrice.textContent = `${money.format(selectedProduct.price)} / ${selectedProduct.unit}`;
+        resetVariantOptions();
+        resetMixOptions();
+        variantOptions.hidden = selectedProduct.variantType !== "3q";
+        mixOptions.hidden = !selectedProduct.isMix;
+        updateSelectedProductDisplay();
+        updateMixMessage();
         modal.hidden = false;
         quantityInput.focus();
         quantityInput.select();
@@ -58,16 +70,52 @@ quantityInput.addEventListener("input", () => {
     quantityInput.value = Math.max(1, getQuantity());
 });
 
+variantInputs.forEach((input) => {
+    input.addEventListener("change", updateSelectedProductDisplay);
+});
+
+mixPreset.addEventListener("change", () => {
+    if (mixPreset.checked) {
+        mixChoiceInputs.forEach((input) => {
+            input.checked = false;
+            input.disabled = true;
+        });
+    } else {
+        mixChoiceInputs.forEach((input) => {
+            input.disabled = false;
+        });
+    }
+
+    updateMixMessage();
+});
+
+mixChoiceInputs.forEach((input) => {
+    input.addEventListener("change", () => {
+        const checkedChoices = getSelectedMixChoices();
+
+        if (checkedChoices.length > 2) {
+            input.checked = false;
+        }
+
+        mixPreset.checked = false;
+        updateMixMessage();
+    });
+});
+
 confirmAddButton.addEventListener("click", () => {
     if (!selectedProduct) return;
 
-    const currentItem = cart.get(selectedProduct.name) || {
-        ...selectedProduct,
+    const productToAdd = getProductToAdd();
+
+    if (!productToAdd) return;
+
+    const currentItem = cart.get(productToAdd.name) || {
+        ...productToAdd,
         quantity: 0
     };
 
     currentItem.quantity += getQuantity();
-    cart.set(selectedProduct.name, currentItem);
+    cart.set(productToAdd.name, currentItem);
     saveCart();
     cartPanel.classList.remove("collapsed");
     closeModal();
@@ -106,24 +154,126 @@ function getQuantity() {
 function closeModal() {
     modal.hidden = true;
     selectedProduct = null;
+    resetVariantOptions();
+    resetMixOptions();
+}
+
+function resetVariantOptions() {
+    variantOptions.hidden = true;
+    variantInputs.forEach((input) => {
+        input.checked = input.value === "box";
+    });
+}
+
+function getSelectedVariantProduct() {
+    if (!selectedProduct || selectedProduct.variantType !== "3q") {
+        return selectedProduct;
+    }
+
+    const variant = document.querySelector('input[name="productVariant"]:checked')?.value;
+
+    if (variant === "single") {
+        return {
+            ...selectedProduct,
+            name: "3Q餅單入",
+            price: 85,
+            unit: "單顆"
+        };
+    }
+
+    return {
+        ...selectedProduct,
+        name: "3Q餅",
+        price: 400,
+        unit: "5入一盒"
+    };
+}
+
+function updateSelectedProductDisplay() {
+    const product = getSelectedVariantProduct();
+
+    if (!product) return;
+
+    modalTitle.textContent = product.name;
+    modalPrice.textContent = `${money.format(product.price)} / ${product.unit}`;
+}
+
+function resetMixOptions() {
+    mixOptions.hidden = true;
+    mixMessage.textContent = "";
+    mixPreset.checked = false;
+    mixChoiceInputs.forEach((input) => {
+        input.checked = false;
+        input.disabled = false;
+    });
+}
+
+function getSelectedMixChoices() {
+    return [...mixChoiceInputs]
+        .filter((input) => input.checked)
+        .map((input) => input.value);
+}
+
+function updateMixMessage() {
+    if (!selectedProduct?.isMix) {
+        mixMessage.textContent = "";
+        return;
+    }
+
+    const choices = getSelectedMixChoices();
+
+    if (mixPreset.checked) {
+        mixMessage.textContent = "已選餅香4溢組。";
+    } else if (choices.length === 0) {
+        mixMessage.textContent = "請選兩組 4 入。";
+    } else if (choices.length === 1) {
+        mixMessage.textContent = "還需要再選一組 4 入。";
+    } else {
+        mixMessage.textContent = `已選：${choices.join(" + ")}`;
+    }
+}
+
+function getProductToAdd() {
+    const product = getSelectedVariantProduct();
+
+    if (!selectedProduct.isMix) {
+        return product;
+    }
+
+    if (mixPreset.checked) {
+        return {
+            ...product,
+            name: `${product.name}（${mixPreset.value}）`
+        };
+    }
+
+    const choices = getSelectedMixChoices();
+
+    if (choices.length !== 2) {
+        updateMixMessage();
+        return null;
+    }
+
+    return {
+        ...product,
+        name: `${product.name}（${choices.join(" + ")}）`
+    };
 }
 
 function renderCart() {
     const items = [...cart.values()];
     const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-    const shipping = subtotal === 0 || subtotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_FEE;
-
     cartCount.textContent = itemCount;
     checkoutButton.disabled = items.length === 0;
     subtotalText.textContent = money.format(subtotal);
-    shippingText.textContent = money.format(shipping);
-    totalText.textContent = money.format(subtotal + shipping);
+    shippingText.textContent = "結帳時計算";
+    totalText.textContent = money.format(subtotal);
 
     if (items.length === 0) {
         cartItems.className = "cart-items empty";
         cartItems.textContent = "尚未加入商品";
-        freeShippingNote.textContent = `再買 ${money.format(FREE_SHIPPING_THRESHOLD)} 即可免運`;
+        freeShippingNote.textContent = "宅配運費於結帳選擇宅配時計算。";
         return;
     }
 
@@ -151,8 +301,8 @@ function renderCart() {
 
     const remaining = FREE_SHIPPING_THRESHOLD - subtotal;
     freeShippingNote.textContent = remaining > 0
-        ? `再買 ${money.format(remaining)} 即可免運`
-        : "已達免運門檻";
+        ? `若選宅配，再買 ${money.format(remaining)} 即可免運`
+        : "若選宅配，已達免運門檻";
 }
 
 function saveCart() {

@@ -45,8 +45,8 @@
                     <legend class="fieldset-label">取貨方式 *</legend>
                     <div class="option-grid">
                         <label class="option-pill">
-                            <input type="radio" name="pickupMethod" value="過嶺自取" required>
-                            過嶺自取
+                            <input type="radio" name="pickupMethod" value="工作室自取" required>
+                            工作室自取
                         </label>
                         <label class="option-pill">
                             <input type="radio" name="pickupMethod" value="龍岡自取">
@@ -61,6 +61,7 @@
                             其他
                         </label>
                     </div>
+                    <p class="hint">選擇宅配才會計算運費。貨運速度是出貨日加 1 至 2 天，物流現在不保證出貨隔日送達，宅配務必算好日期。</p>
                     <input id="pickup-other" name="pickupOther" placeholder="若選其他，請填寫取貨方式" disabled>
                 </fieldset>
 
@@ -76,12 +77,12 @@
                         <input id="is-paid" type="checkbox" name="isPaid" value="已付款">
                         已付款
                     </label>
-                    <input id="bank-last-five" name="bankLastFive" placeholder="若已付款，請填銀行後五碼" maxlength="5" disabled>
+                    <input id="bank-last-five" name="bankLastFive" placeholder="若已付款，請填帳號後五碼" maxlength="5" disabled>
                 </fieldset>
 
                 <div class="form-group">
                     <label for="order-note">備註</label>
-                    <textarea id="order-note" name="orderNote" placeholder="需要避開的時間、取貨提醒或其他需求"></textarea>
+                    <textarea id="order-note" name="orderNote" placeholder="不需要紙盒或提袋、取貨提醒或其他需求"></textarea>
                 </div>
 
                 <p id="form-status" class="form-status" role="status"></p>
@@ -118,6 +119,7 @@
         <p>© 2026 冰藍烘焙實驗室</p>
     </footer>
 
-    <script src="js/checkout.js?v=1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script src="js/checkout.js?v=3"></script>
 </body>
 </html>
