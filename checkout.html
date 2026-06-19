@@ -31,12 +31,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label id="customer-address-label" for="customer-address">地址</label>
-                    <input id="customer-address" name="customerAddress" autocomplete="street-address">
-                    <p class="hint">選擇宅配時為必填。</p>
-                </div>
-
-                <div class="form-group">
                     <label for="customer-email">Email</label>
                     <input id="customer-email" name="customerEmail" type="email" autocomplete="email">
                     <p class="hint">訂單回傳確認用，非必填。</p>
@@ -65,6 +59,12 @@
                     <p class="hint">選擇宅配才會計算運費。貨運速度是出貨日加 1 至 2 天，物流現在不保證出貨隔日送達，宅配務必算好日期。</p>
                     <input id="pickup-other" name="pickupOther" placeholder="若選其他，請填寫取貨方式" disabled>
                 </fieldset>
+
+                <div class="form-group">
+                    <label id="customer-address-label" for="customer-address">地址</label>
+                    <input id="customer-address" name="customerAddress" autocomplete="street-address">
+                    <p class="hint">選擇宅配時為必填。</p>
+                </div>
 
                 <div class="form-group">
                     <label for="ship-date">出貨日期 *</label>
