@@ -58,7 +58,7 @@ main {
 
 .hero h1 {
     color: var(--accent-dark);
-    font-size: 2.5rem;
+    font-size: 1.75rem;
     line-height: 1.25;
     letter-spacing: 0;
 }
@@ -731,7 +731,7 @@ fieldset.form-group {
     }
 
     .hero h1 {
-        font-size: 1.85rem;
+        font-size: 1.3rem;
     }
 
     .product-info h2 {
