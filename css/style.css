@@ -279,8 +279,13 @@ details a {
     border: 0;
     border-radius: 8px 0 0 8px;
     color: #fff;
-    background: var(--accent-dark);
+    background: #8f6344;
     box-shadow: var(--shadow);
+    transition: background .18s ease;
+}
+
+.cart-tab:hover {
+    background: #744c32;
 }
 
 .cart-tab span {
@@ -294,7 +299,7 @@ details a {
     display: grid;
     place-items: center;
     border-radius: 999px;
-    color: var(--accent-dark);
+    color: #744c32;
     background: #fff;
     font-size: .95rem;
 }
@@ -552,6 +557,44 @@ footer {
     margin-top: 24px;
 }
 
+.social-links {
+    position: fixed;
+    left: 18px;
+    bottom: 18px;
+    z-index: 15;
+    display: flex;
+    gap: 9px;
+}
+
+.social-links a {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: #3f7180;
+    border: 1px solid rgba(255, 255, 255, .72);
+    border-radius: 50%;
+    box-shadow: 0 8px 22px rgba(38, 52, 61, .2);
+    transition: transform .18s ease, background .18s ease;
+}
+
+.social-links a:hover {
+    background: #315d6b;
+    transform: translateY(-2px);
+}
+
+.social-links a:focus-visible {
+    outline: 3px solid rgba(198, 160, 102, .65);
+    outline-offset: 2px;
+}
+
+.social-links svg {
+    width: 21px;
+    height: 21px;
+    fill: currentColor;
+}
+
 .checkout-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr);
@@ -805,6 +848,17 @@ fieldset.form-group {
 
     .cart-content {
         max-height: 68vh;
+    }
+
+    .social-links {
+        left: 10px;
+        bottom: 18px;
+        gap: 7px;
+    }
+
+    .social-links a {
+        width: 40px;
+        height: 40px;
     }
 
     .checkout-layout,
