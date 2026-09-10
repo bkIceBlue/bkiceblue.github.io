@@ -102,7 +102,7 @@
                 </div>
                 <div class="product-info">
                     <h2>3Q餅</h2>
-                    <p>$400 / 5入一盒</p>
+                    <p>$400 / 5入一盒（完售）</p>
                     <p>$85 / 單顆</p>
                 </div>
                 <button class="add-cart-btn" data-name="3Q餅" data-price="400" data-unit="5入一盒" data-variants="3q">加入購物車</button>
@@ -303,12 +303,12 @@
             <p id="modal-price" class="modal-price">$0</p>
             <div id="variant-options" class="variant-options" hidden>
                 <p>請選擇購買方式</p>
-                <label>
-                    <input type="radio" name="productVariant" value="box" checked>
-                    5入一盒｜$400
+                <label class="sold-out">
+                    <input type="radio" name="productVariant" value="box" disabled>
+                    5入一盒｜$400（完售）
                 </label>
                 <label>
-                    <input type="radio" name="productVariant" value="single">
+                    <input type="radio" name="productVariant" value="single" checked>
                     單顆｜$85
                 </label>
             </div>

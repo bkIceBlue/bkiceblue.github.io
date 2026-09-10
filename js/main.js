@@ -224,7 +224,7 @@ function closeModal() {
 function resetVariantOptions() {
     variantOptions.hidden = true;
     variantInputs.forEach((input) => {
-        input.checked = input.value === "box";
+        input.checked = input.value === "single" && !input.disabled;
     });
 }
 
@@ -233,7 +233,7 @@ function getSelectedVariantProduct() {
         return selectedProduct;
     }
 
-    const variant = document.querySelector('input[name="productVariant"]:checked')?.value;
+    const variant = document.querySelector('input[name="productVariant"]:checked:not(:disabled)')?.value;
 
     if (variant === "single") {
         return {
@@ -244,12 +244,7 @@ function getSelectedVariantProduct() {
         };
     }
 
-    return {
-        ...selectedProduct,
-        name: "3Q餅",
-        price: 400,
-        unit: "5入一盒"
-    };
+    return null;
 }
 
 function updateSelectedProductDisplay() {

@@ -521,6 +521,12 @@ details a {
     font-weight: 700;
 }
 
+.variant-options label.sold-out {
+    color: var(--muted);
+    background: #eee;
+    cursor: not-allowed;
+}
+
 .variant-options input,
 .mix-options input {
     width: auto;
