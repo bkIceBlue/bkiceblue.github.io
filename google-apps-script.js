@@ -1,3 +1,5 @@
+const ORDERING_PAUSED = true;
+const ORDERING_PAUSED_MESSAGE = "正在做最後庫存清點，暫時停止訂購，請留意粉絲團最新消息";
 const SHEET_NAME = "訂單";
 const ORDER_SEQUENCE_KEY = "BK26_ORDER_SEQUENCE";
 const SHEET_CONTROLS_VERSION_KEY = "BK26_SHEET_CONTROLS_VERSION";
@@ -77,6 +79,7 @@ const MAX_ORDER_QUANTITY = 100;
 
 function doGet(e) {
   if (e && e.parameter.action === "nextOrderNumber") {
+    if (ORDERING_PAUSED) return createJsonpResponse(e.parameter.callback, { ok: false, message: ORDERING_PAUSED_MESSAGE });
     const callback = String(e.parameter.callback || "").replace(/[^\w.$]/g, "");
     const payload = JSON.stringify({
       ok: true,
@@ -125,6 +128,7 @@ function doPost(e) {
     return createJsonResponse(reportPayment(sheet, order));
   }
 
+  if (ORDERING_PAUSED) return createJsonResponse({ ok: false, message: ORDERING_PAUSED_MESSAGE });
   const validation = validateAndNormalizeOrder(order);
   if (!validation.ok) return createJsonResponse(validation);
   const safeOrder = validation.order;

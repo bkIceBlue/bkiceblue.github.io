@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>冰藍烘焙實驗室</title>
-    <link rel="stylesheet" href="css/style.css?v=12">
+    <link rel="stylesheet" href="css/style.css?v=13">
 </head>
 <body>
     <header class="site-header">
@@ -16,7 +16,8 @@
             <h1>中秋禮盒</h1>
         </section>
 
-        <section class="products" aria-label="商品列表">
+        <section class="order-status-card"><h2>暫時停止訂購</h2><p>正在做最後庫存清點，暫時停止訂購，請留意粉絲團最新消息</p><a href="index.html#order-status-title">查詢訂單進度與付款回報</a></section>
+<section class="products" aria-label="商品列表">
             <article class="product-card">
                 <div class="product-gallery" data-carousel>
                     <div class="carousel-track">
@@ -32,7 +33,7 @@
                     <h2>蛋黃酥</h2>
                     <p>$600 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="蛋黃酥" data-price="600" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="蛋黃酥" data-price="600" data-unit="8入一盒">暫時停止訂購</button>
             </article>
 
             <article class="product-card">
@@ -50,7 +51,7 @@
                     <h2>芋頭酥</h2>
                     <p>$600 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="芋頭酥" data-price="600" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="芋頭酥" data-price="600" data-unit="8入一盒">暫時停止訂購</button>
             </article>
 
             <article class="product-card">
@@ -68,7 +69,7 @@
                     <h2>清豆椪</h2>
                     <p>$600 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="清豆椪" data-price="600" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="清豆椪" data-price="600" data-unit="8入一盒">暫時停止訂購</button>
             </article>
 
             <article class="product-card">
@@ -86,7 +87,7 @@
                     <h2>豆沙滷肉</h2>
                     <p>$600 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="豆沙滷肉" data-price="600" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="豆沙滷肉" data-price="600" data-unit="8入一盒">暫時停止訂購</button>
             </article>
 
             <article class="product-card">
@@ -105,7 +106,7 @@
                     <p>$400 / 5入一盒（完售）</p>
                     <p>$85 / 單顆</p>
                 </div>
-                <button class="add-cart-btn" data-name="3Q餅" data-price="400" data-unit="5入一盒" data-variants="3q">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="3Q餅" data-price="400" data-unit="5入一盒" data-variants="3q">暫時停止訂購</button>
             </article>
 
             <article class="product-card">
@@ -124,7 +125,7 @@
                     <p>$600 / 8入一盒</p>
                     <p class="product-note">點選後自由搭配</p>
                 </div>
-                <button class="add-cart-btn" data-name="綜合月餅" data-price="600" data-unit="8入一盒" data-mix="true">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="綜合月餅" data-price="600" data-unit="8入一盒" data-mix="true">暫時停止訂購</button>
             </article>
 
             <article class="product-card">
@@ -142,7 +143,7 @@
                     <h2>鳳梨酥</h2>
                     <p>$480 / 8入一盒</p>
                 </div>
-                <button class="add-cart-btn" data-name="鳳梨酥" data-price="480" data-unit="8入一盒">加入購物車</button>
+                <button class="add-cart-btn" disabled data-name="鳳梨酥" data-price="480" data-unit="8入一盒">暫時停止訂購</button>
             </article>
         </section>
 
@@ -267,7 +268,7 @@
         </section>
     </main>
 
-    <aside class="cart-panel" aria-live="polite">
+    <aside hidden class="cart-panel" aria-live="polite">
         <button class="cart-tab" type="button" aria-label="開關購物車">
             <span>購物車</span>
             <strong id="cart-count">0</strong>
@@ -341,7 +342,7 @@
                 <input id="quantity-input" type="number" min="1" value="1" inputmode="numeric">
                 <button id="increase-qty" type="button" aria-label="增加數量">+</button>
             </div>
-            <button id="confirm-add" class="confirm-add" type="button">加入購物車</button>
+            <button id="confirm-add" class="confirm-add" type="button">暫時停止訂購</button>
         </section>
     </div>
 
@@ -362,7 +363,8 @@
         <p>© 2026 冰藍烘焙實驗室</p>
     </footer>
 
-    <script src="js/main.js?v=9"></script>
+    <dialog id="ordering-notice" aria-labelledby="ordering-notice-title" aria-describedby="ordering-notice-message"><h2 id="ordering-notice-title">暫時停止訂購</h2><p id="ordering-notice-message">正在做最後庫存清點，暫時停止訂購，請留意粉絲團最新消息</p><form method="dialog"><button class="submit-button" autofocus>我知道了</button></form><a href="index.html#order-status-title" id="notice-lookup">查詢訂單進度與付款回報</a></dialog><script src="js/ordering-notice.js?v=1"></script>
+<script src="js/main.js?v=10"></script>
     <script src="js/order-status.js?v=2"></script>
 </body>
 </html>

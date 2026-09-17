@@ -1,3 +1,4 @@
+const ORDERING_PAUSED = true;
 const SHIPPING_FEE = 90;
 const FREE_SHIPPING_THRESHOLD = 6000;
 const CART_STORAGE_KEY = "iceblue-cart";
@@ -66,6 +67,7 @@ paymentMethodInput.addEventListener("change", updatePaidState);
 
 form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (ORDERING_PAUSED) { statusText.textContent = "正在做最後庫存清點，暫時停止訂購，請留意粉絲團最新消息"; return; }
 
     if (cart.length === 0) {
         statusText.textContent = "購物車是空的，請先回商品頁選購。";

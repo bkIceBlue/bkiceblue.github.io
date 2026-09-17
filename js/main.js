@@ -35,6 +35,7 @@ initializeCarousels();
 
 document.querySelectorAll(".add-cart-btn").forEach((button) => {
     button.addEventListener("click", () => {
+        if (window.ORDERING_PAUSED) return;
         selectedProduct = {
             name: button.dataset.name,
             price: Number(button.dataset.price),
@@ -105,7 +106,7 @@ mixChoiceInputs.forEach((input) => {
 });
 
 confirmAddButton.addEventListener("click", () => {
-    if (!selectedProduct) return;
+    if (window.ORDERING_PAUSED || !selectedProduct) return;
 
     const productToAdd = getProductToAdd();
 
@@ -129,6 +130,7 @@ document.querySelector(".cart-tab").addEventListener("click", () => {
 });
 
 checkoutButton.addEventListener("click", () => {
+    if (window.ORDERING_PAUSED) return;
     if (cart.size === 0) {
         cartPanel.classList.remove("collapsed");
         return;
