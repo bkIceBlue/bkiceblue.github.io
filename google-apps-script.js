@@ -3,14 +3,12 @@ const ORDERING_PAUSED_MESSAGE = "正在做最後庫存清點，暫時停止訂�
 const SHEET_NAME = "訂單";
 const ORDER_SEQUENCE_KEY = "BK26_ORDER_SEQUENCE";
 const SHEET_CONTROLS_VERSION_KEY = "BK26_SHEET_CONTROLS_VERSION";
-const SHEET_CONTROLS_VERSION = "2";
+const SHEET_CONTROLS_VERSION = "3";
 
 const PAYMENT_STATUS_OPTIONS = [
   "尚未付款",
   "已回報待確認",
-  "已付款",
   "付款已確認",
-  "已退款",
   "訂單取消"
 ];
 const PAYMENT_METHOD_OPTIONS = [
@@ -95,6 +93,10 @@ function doGet(e) {
     return ContentService
       .createTextOutput(payload)
       .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  if (e && e.parameter.action === "queryOrders") {
+    return createJsonpResponse(e.parameter.callback, queryOrders(e.parameter.phoneHash));
   }
 
   if (e && e.parameter.action === "queryOrder") {
@@ -429,6 +431,37 @@ function hasOrderNumber(sheet, orderNumber) {
     .findNext();
 
   return Boolean(match);
+}
+
+function queryOrders(phoneHash) {
+  const proof = String(phoneHash || "").toLowerCase();
+  if (!/^[a-f0-9]{64}$/.test(proof)) return { ok: false, found: false, orders: [] };
+  const attemptKey = createAttemptKey("phoneLookup", proof);
+  if (isAttemptBlocked(attemptKey, 8)) return { ok: false, found: false, orders: [], message: "查詢次數過多，請於 10 分鐘後再試。" };
+  // Count every request, including successful queries, for this phone proof.
+  recordFailedAttempt(attemptKey);
+  const sheet = getOrderSheet();
+  if (sheet.getLastRow() < 2) return { ok: true, found: false, orders: [] };
+  const rows = sheet.getRange(2, 1, sheet.getLastRow() - 1, 20).getDisplayValues();
+  const orders = rows.filter(function(values) {
+    const phone = normalizePhone(values[3]);
+    return /^09\d{8}$/.test(phone) && values[0] && hashText(phone) === proof;
+  }).map(function(values) {
+    const name = Array.from(String(values[2] || "").trim());
+    const phone = normalizePhone(values[3]);
+    const city = String(values[5] || "").trim().match(/^(?:\d{3,6}\s*)?([^\s]{2,3}[縣市])/);
+    return {
+      orderNumber: values[0],
+      maskedName: name.length ? name[0] + "＊".repeat(Math.max(1, name.length - 1)) : "尚未提供",
+      maskedPhone: phone.slice(0, 4) + "＊＊＊" + phone.slice(-3),
+      maskedAddress: values[5] ? (city ? city[1] : "") + "＊＊＊＊" : "尚未提供",
+      shipDate: values[7],
+      paymentStatus: values[8] || "尚未付款",
+      shippingStatus: values[18] || "處理中",
+      trackingNumber: values[19] || ""
+    };
+  }).reverse();
+  return { ok: true, found: orders.length > 0, orders: orders };
 }
 
 function queryOrder(orderNumber, phoneHash) {

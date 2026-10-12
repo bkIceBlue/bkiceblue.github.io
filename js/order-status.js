@@ -20,7 +20,6 @@ lookupForm.addEventListener("submit", async (event) => {
 
     if (!lookupForm.reportValidity()) return;
 
-    const orderNumber = document.querySelector("#lookup-order-number").value.trim().toUpperCase();
     const phone = normalizePhone(document.querySelector("#lookup-phone").value);
     lookupButton.disabled = true;
     lookupStatus.textContent = "正在查詢訂單...";
@@ -29,16 +28,15 @@ lookupForm.addEventListener("submit", async (event) => {
 
     try {
         const phoneHash = await hashText(phone);
-        const result = await queryOrder(orderNumber, phoneHash);
+        const result = await queryOrders(phoneHash);
 
-        if (!result.ok || !result.found) {
-            lookupStatus.textContent = "查無符合資料，請確認訂單編號與手機號碼。";
+        if (!result.ok || !result.found || !result.orders?.length) {
+            lookupStatus.textContent = result.message || "查無符合資料，請確認訂購時填寫的手機號碼。";
             return;
         }
 
-        verifiedOrder = { orderNumber, phone };
-        renderOrderResult(result.order);
-        lookupStatus.textContent = "已找到訂單。";
+        renderOrderList(result.orders, phone);
+        lookupStatus.textContent = `已找到 ${result.orders.length} 筆訂單。`;
     } catch (error) {
         console.error(error);
         lookupStatus.textContent = "目前無法查詢，請稍後再試。";
@@ -55,6 +53,8 @@ paymentReportForm.addEventListener("submit", async (event) => {
     if (!verifiedOrder || !paymentReportForm.reportValidity()) return;
 
     paymentReportButton.disabled = true;
+    lookupButton.disabled = true;
+    document.querySelectorAll("#order-list button").forEach((button) => { button.disabled = true; });
     paymentReportStatus.textContent = "正在送出付款資訊...";
 
     const reference = paymentMethod.value === "LINE Pay Money"
@@ -84,6 +84,8 @@ paymentReportForm.addEventListener("submit", async (event) => {
         paymentReportStatus.textContent = "付款資訊未能送出，請稍後再試。";
     } finally {
         paymentReportButton.disabled = false;
+        lookupButton.disabled = false;
+        document.querySelectorAll("#order-list button").forEach((button) => { button.disabled = false; });
     }
 });
 
@@ -133,7 +135,7 @@ function updatePaymentFields() {
     linePayName.disabled = !isLinePay;
 }
 
-function queryOrder(orderNumber, phoneHash) {
+function queryOrders(phoneHash) {
     return new Promise((resolve, reject) => {
         const callbackName = `iceblueOrderLookup_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
         const script = document.createElement("script");
@@ -156,9 +158,56 @@ function queryOrder(orderNumber, phoneHash) {
             cleanup();
             reject(new Error("查詢服務連線失敗"));
         };
-        script.src = `${ORDER_SERVICE_URL}?action=queryOrder&orderNumber=${encodeURIComponent(orderNumber)}&phoneHash=${encodeURIComponent(phoneHash)}&callback=${encodeURIComponent(callbackName)}`;
+        script.src = `${ORDER_SERVICE_URL}?action=queryOrders&phoneHash=${encodeURIComponent(phoneHash)}&callback=${encodeURIComponent(callbackName)}`;
         document.head.append(script);
     });
+}
+
+function renderOrderList(orders, phone) {
+    const list = document.querySelector("#order-list");
+    list.replaceChildren();
+    const selectOrder = (order) => {
+        verifiedOrder = { orderNumber: order.orderNumber, phone };
+        paymentReportForm.reset();
+        updatePaymentFields();
+        document.querySelector("#selected-order-title").textContent = `訂單 ${order.orderNumber}`;
+        renderOrderResult(order);
+    };
+    orders.forEach((order) => {
+        const card = document.createElement("section");
+        card.className = "lookup-order-card";
+        const heading = document.createElement("h3");
+        heading.textContent = order.orderNumber;
+        card.append(heading);
+        const details = document.createElement("dl");
+        const fields = [
+            ["姓名", order.maskedName], ["手機", order.maskedPhone],
+            ["地址", order.maskedAddress], ["付款狀態", order.paymentStatus],
+            ["出貨狀態", order.shippingStatus], ["預定出貨日期", formatDisplayDate(order.shipDate)],
+            ["出貨單號", order.trackingNumber || "尚未提供"]
+        ];
+        fields.forEach(([label, value]) => {
+            const row = document.createElement("div");
+            const term = document.createElement("dt");
+            const description = document.createElement("dd");
+            term.textContent = label;
+            description.textContent = value || "尚未提供";
+            row.append(term, description);
+            details.append(row);
+        });
+        card.append(details);
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "submit-button";
+        button.textContent = "選擇此訂單／回報付款";
+        button.addEventListener("click", () => {
+            selectOrder(order);
+            document.querySelector("#selected-order-title").scrollIntoView({ block: "center", behavior: "smooth" });
+        });
+        card.append(button);
+        list.append(card);
+    });
+    selectOrder(orders[0]);
 }
 
 async function hashText(value) {
